@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обратная связь</title>
+<style>
+.feedback {
+text-align: center;
+border-radius: 10px 10px 0 0;
+-webkit-border-radius: 10px 10px 0 0;
+-moz-border-radius: 10px 10px 0 0;
+-o-border-radius: 10px 10px 0 0;
+width:320px;
+max-width: 100%;
+background: #333;
+color: #fff;
+position: fixed;
+height:240px;
+bottom: -269px;
+right: 10px;
+border-top:30px solid #fc0;
+padding: 15px;
+transition: bottom .6s ease-out;
+}
+.feedback::after {
+content: 'Жду звонка';
+color: #000;
+position: absolute;
+right: 0;
+left:0;
+text-align: center;
+top:-26px;
+}
+.feedback p{
+text-align: left;
+}
+.feedback input{
+border: 0;
+outline: 0;
+padding: 8px 16px;
+margin: 8px 0 8px 0;
+display: inline-block;
+}
+.feedback [type=submit]{
+color: #000;
+background: #fc0;
+}
+.feedback:hover {
+bottom: 0;
+}
+</style>
+</head>
+<body>
+<div class="feedback">
+<p>Если у вас возникли вопросы по этому коду, звоните мне по телефону:8 (925) 708-34-22.</p>
+<input type="tel" name="tel" placeholder="+79853456172" size=12>
+<input type="submit" value="Жду звонка">
+</div>
+<ul>
+<li>ease — анимация начинается медленно, затем ускоряется и к концу движения опять замедляется.
+<li>ease-in — анимация медленно начинается, к концу ускоряется.
+<li>ease-out — анимация начинается быстро, к концу замедляется.
+<li>ease-in-out — анимация начинается и заканчивается медленно.
+<li>linear — одинаковая скорость от начала и до конца.
+</ul>
+<script>
+console.dir(navigator.connection);
+</script>
