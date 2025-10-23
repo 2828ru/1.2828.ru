@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Сообщить об ошибку</title>
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --text: #fff;
+      --accent: #007bff;
+      --input-bg: #2d2d2d;
+      --border: #444;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --gray: #ccc;
+      --overlay-bg: rgba(0, 0, 0, 0.9);
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .content-area {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      min-height: 150px;
+      user-select: text;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .features {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-icon {
+      font-size: 1.2rem;
+      margin-right: 0.75rem;
+      color: var(--accent);
+    }
+
+    .feature-text {
+      font-size: 1rem;
+    }
+
+    .modal {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-height: 50vh;
+      overflow-y: auto;
+      background: var(--bg);
+      box-shadow: 0 -2px 10px var(--shadow);
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: transparent;
+      z-index: 9998;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .modal-backdrop.active {
+      background: var(--overlay-bg);
+      opacity: 1;
+      display: block;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .modal-close {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--accent);
+    }
+
+    .modal-content {
+      padding: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: vertical;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: var(--gray);
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    /* Swipe handle */
+    .swipe-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      margin: 8px auto;
+      border-radius: 2px;
+      cursor: grab;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <h1>Сообщить об ошибку</h1>
+
+    <p>Выделите текст в публикации и используйте один из способов, чтобы сообщить о найденной ошибке:</p>
+
+    <div class="features">
+      <div class="feature-item">
+        <div class="feature-icon">?</div>
+        <div class="feature-text"><strong>Двойной тап</strong> на тексте на мобильном устройстве</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⌨️</div>
+        <div class="feature-text"><strong>F9</strong> или <strong>Ctrl/Cmd + Enter</strong> на клавиатуре</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">?</div>
+        <div class="feature-text"><strong>Свайп вниз</strong>, чтобы закрыть окно</div>
+      </div>
+    </div>
+
+    <!-- Пример текста -->
+    <div class="content-area" id="contentArea">
+      Это пример текста, где вы можете выбрать фрагмент с ошибкой.
+      Выделите его дважды коснитесь — чтобы открыть форму.
+    </div>
+  </main>
+
+  <!-- Модальное окно -->
+  <div class="modal-backdrop" id="errorModalBackdrop">
+    <div class="modal" id="errorModal">
+      <div class="swipe-handle"></div>
+      <div class="modal-header">
+        <div class="modal-title">Сообщение об ошибке</div>
+        <div class="modal-close" onclick="closeModal()">×</div>
+      </div>
+      <div class="modal-content">
+        <label for="description">Описание:</label>
+        <textarea id="description" placeholder="Введите описание ошибки"></textarea>
+        <button onclick="submitForm()">Отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025. Простая форма обратной связи.
+  </footer>
+
+  <script>
+    const modal = document.getElementById('errorModal');
+    const backdrop = document.getElementById('errorModalBackdrop');
+    const contentArea = document.getElementById('contentArea');
+    let startY = 0;
+
+    function openModal() {
+      modal.style.transform = 'translateY(0)';
+      modal.classList.add('open');
+      backdrop.classList.add('active');
+    }
+
+    function closeModal() {
+      modal.style.transform = 'translateY(100%)';
+      backdrop.classList.remove('active');
+      setTimeout(() => {
+        modal.classList.remove('open');
+      }, 300);
+    }
+
+    function submitForm() {
+      const desc = document.getElementById('description').value.trim();
+      if (desc) alert('Ошибка отправлена:\n\n' + desc);
+      else alert('Ошибка отправлена без описания.');
+      closeModal();
+    }
+
+    // Двойной клик/тап на тексте
+    let clickCount = 0;
+    contentArea.addEventListener('pointerdown', () => {
+      clickCount++;
+      if (clickCount === 1) {
+        setTimeout(() => { clickCount = 0; }, 300); // reset after delay
+      } else if (clickCount === 2) {
+        openModal();
+        clickCount = 0;
+      }
+    });
+
+    // Hotkeys
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        openModal();
+      } else if (e.key === 'F9') {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    // Swipe down to close
+    const swipeArea = document.querySelector('.swipe-handle') || modal;
+
+    swipeArea.addEventListener('touchstart', e => {
+      startY = e.touches[0].clientY;
+    });
+
+    swipeArea.addEventListener('touchmove', e => {
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - startY;
+
+      if (diff > 0) {
+        modal.style.transform = `translateY(${diff}px)`;
+      }
+    });
+
+    swipeArea.addEventListener('touchend', e => {
+      const currentY = e.changedTouches[0].clientY;
+      const diff = currentY - startY;
+
+      if (diff > 50) {
+        closeModal();
+      } else {
+        modal.style.transform = 'translateY(0)';
+      }
+    });
+
+    // Click outside to close
+    backdrop.addEventListener('click', e => {
+      if (e.target === backdrop) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
