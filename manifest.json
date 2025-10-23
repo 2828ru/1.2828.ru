@@ -1,0 +1,9 @@
+{
+"version": "1",
+"api_version": 1
+"layout": {
+"logo": "http://2828.ru/i/km2red.gif",
+"color": "#aabbcc",
+"show_title": all
+}
+}
