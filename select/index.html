@@ -1,0 +1,569 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{
+  font: inherit;
+  font-weight: 100;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  outline: none;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
+}
+*,
+*::before,
+*::after{
+  box-sizing: inherit;
+}
+html{
+  font: 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe WP','Segoe UI',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
+  box-sizing: border-box;
+  color: #000;
+  background-color: #f6f5f3;
+}
+body{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+a,
+button,
+li{
+  cursor: pointer;
+  user-select: none;
+}
+a:hover{
+  color: #b00020;
+}
+/* Блок навигации */
+.n{
+  background: #efebe9;
+}
+/* Блок выбора тегов */
+.sel{
+  margin: 16px;
+}
+.sel li{
+  font-size: 13px;
+  line-height: 26px;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  padding: 0 13px;
+  cursor: pointer;
+  transition: all .3s;
+  vertical-align: top;
+  color: #2b2b2b;
+  border: 1px solid rgba(76,101,146,.3);
+  border-radius: 13px;
+  background: rgba(195,211,239,.25);
+}
+.sel .h{
+  background: #ffe5e5;
+}
+/* Главный блок */
+#m a{
+  /* border:1px dotted red; */
+  line-height: 38px;
+  position: relative;
+  display: inline-block;
+  min-width: 38px;
+  text-decoration: none;
+  color: #000;
+}
+.b li a + a{
+  padding-left: 16px;
+}
+.b li{
+  line-height: 1.3;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display:         flex;
+          flex-direction: row;
+  min-height: 38px;
+  padding: 6px 0;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.1);
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+}
+.b li b{
+  /*    border-left:1px dotted red; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display:         flex;
+  display: block;
+  overflow: hidden;
+  width: 0;
+  margin: auto;
+  padding-left: 16px;
+  text-overflow: ellipsis;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+.b li b:last-child{
+  padding-right: 16px;
+  text-align: right;
+  color: rgba(0,0,0,.5);
+}
+.b b:nth-child(2){
+  -webkit-flex-grow: 2;
+          flex-grow: 2;
+}
+.b b:nth-child(3){
+  -webkit-flex-grow: 3;
+          flex-grow: 3;
+}
+.b li.selected b:last-child:after{
+  display: inline-block;
+  padding-left: 16px;
+  content: '⋮';
+}
+/* Мод: выбран / активен */
+li.selected{
+  background: #fdedad;
+}
+li.selected:hover{
+  background: #ffeba0;
+}
+/* Мод: Стрелка вниз / раскрыть */
+.b a > i:empty{
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-top: -.33em;
+  -webkit-transition: -webkit-transform .3s;
+          transition:         transform .3s;
+  -webkit-transform: scale(.75) rotate(45deg);
+          transform: scale(.75) rotate(45deg);
+  vertical-align: middle;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  background: 50% no-repeat;
+}
+button{
+  font-size: 15px;
+  line-height: 30px;
+  display: inline-block;
+  overflow: hidden;
+  margin: 16px 0 16px 16px;
+  padding: 0 14px;
+  text-align: center;
+  text-overflow: ellipsis;
+  color: #000;
+  border: 1px solid;
+  border-color: rgba(0,0,0,.2);
+  border-radius: 3px;
+  background: transparent;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+          justify-content: center;
+}
+button.l{
+  border-color: transparent;
+}
+button.l:hover{
+  border: 1px solid #ffdb4d;
+  background: #ffe57f;
+}
+button.h{
+  background: #ffdb4d;
+}
+button.h:hover{
+  background: #ffe57f;
+}
+button:hover{
+  border-color: rgba(0, 0, 0, .4);
+}
+.ext{
+  float: left;
+  width: 240px;
+}
+.ext dt{
+  font-size: 18px;
+  font-weight: 600;
+  display: block;
+  margin: 0 0 10px;
+  color: #4b4b4b;
+}
+[class^=ico]{
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0 10px 0 0;
+  cursor: pointer;
+  transition: opacity .3s ease-in-out;
+  opacity: .6;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.ico_like{
+  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg width=\'23\' height=\'24\' viewBox=\'0 0 23 24\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M21.072 9.92c.808 0 1.463.65 1.463 1.453v.057a21.92 21.92 0 0 1-1.087 5.582l-.004.012a22.019 22.019 0 0 1-3.604 6.662l-.002.004-.212.25H6.513V11.562l6.447-7.624.004-.005c.45-.567.791-1.2 1.027-1.9l.003-.009a6.29 6.29 0 0 0 .311-1.601C14.57.162 14.935 0 15.338 0c.755 0 1.269.498 1.576 1.345.366 1.01.334 2.156.334 2.156 0 1.488-.52 2.855-1.383 3.937l.003.003-2.124 2.478h7.328zM0 23.94V11.562h4.342v12.376H0z\' fill=\'%23000\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+  background-size: 23px;
+}
+.ico_dislike{
+  top: 8px;
+  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg width=\'23\' height=\'24\' viewBox=\'0 0 23 24\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1.463 14.02C.655 14.02 0 13.37 0 12.567v-.058a21.92 21.92 0 0 1 1.087-5.582l.004-.012A22.017 22.017 0 0 1 4.695.253L4.697.25 4.908 0h11.114v12.376l-6.447 7.625-.004.005c-.45.567-.792 1.2-1.027 1.9l-.003.008a6.29 6.29 0 0 0-.312 1.601c-.264.262-.629.424-1.032.424-.755 0-1.27-.497-1.576-1.345-.366-1.01-.334-2.155-.334-2.155 0-1.489.52-2.855 1.383-3.938l-.003-.002 2.124-2.479H1.463zm16.73-1.643V0h4.342v12.377h-4.342z\' fill=\'%23000\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+  background-size: 23px;
+}
+#ab{
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 48px;
+  color: #fff;
+  background: #333;
+}
+#ab dt,
+#ab dd{
+  font-size: 24px;
+  line-height: 48px;
+  display: inline-block;
+  overflow: hidden;
+  min-width: 48px;
+  height: 48px;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  background: #333;
+}
+#ab dt{
+  font-size: 32px;
+  font-weight: 300;
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  display: block;
+  width: 64px;
+  height: 64px;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  border: 6px solid #fff;
+  border-radius: 50%;
+}
+#ab dd{
+  overflow: hidden;
+  width: 20%;
+  min-width: 48px;
+  /* border:1px dotted red; */
+}
+#ab dd:nth-child(1),
+#ab dd:nth-child(2){
+  text-align: left;
+}
+#ab dd:nth-child(3),
+#ab dd:nth-child(4){
+  text-align: right;
+}
+/* Мод: стрелка назад */
+.m-back{
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-top: -.33em;
+  -webkit-transition: -webkit-transform .3s;
+          transition:         transform .3s;
+  -webkit-transform: scale(.75) rotate(45deg);
+          transform: scale(.75) rotate(45deg);
+  vertical-align: middle;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  background: 50% no-repeat;
+}
+/* Дополнительные блоки EXTRA */
+[class^=ext-]{
+  font-size: 15px;
+  display: block;
+  margin: 16px 0;
+  padding: 16px;
+  text-align: center;
+}
+[class^=ext-] input{
+  line-height: 32px;
+  height: 32px;
+  margin: 0 0 0 20px;
+  padding: 0 8px;
+}
+.ext-subscription{
+  background: #e4eeff;
+}
+.ext-subscription input[type=submit]{
+  margin: 0;
+  background: #dbe7fb;
+}
+.ext-news{
+  background: #fff68c;
+}
+.ext-news input[type=submit]{
+  margin: 0;
+}
+.ext-feedback{
+  font-size: 24px;
+}
+.ext-feedback button{
+  display: table;
+  margin: 16px auto;
+}
+::-webkit-scrollbar{
+  width: 13px;
+  height: 13px;
+}
+::-webkit-scrollbar-corner{
+  background: 0 0;
+}
+::-webkit-scrollbar-thumb{
+  min-height: 20px;
+  border: solid transparent;
+  border-width: 1px 3px;
+  border-radius: 6px;
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 10px rgba(0,0,0,.4);
+}
+</style>
+<ul class="b n"><li><b><a class="m-back"></a><a href="#h">Сайты
+<i></i></a></b><b><a href="#">Вид
+<i></i></a><a href="#">Сортировка по дате
+<i></i></a></b><b><a href="#e">Ещё
+<i></i></a><a href="#q">Выход</a></b></ul>
+<ul id="m" class="b"><li><b>URL</b><b>TITLE</b><b>NAME</b><b>UPD TAG</b>
+<li><b>SITE</b><b>HOST</b><b>EML</b><b>DATE</b>
+<li><b>160
+</b><b>Длина title
+</b><b>Оптимальная длина title варьируется от 55 до 90 символов</b></b><b>SEO</b>
+<li><b>MULTI
+</b><b>
+</b><b>Не стоит употреблять то же самое ключевое слово в title более одного раза. В крайнем случае, можете использовать его словоформы (падежи, единственное и множественное число и т. д.)
+</b><b>SEO</b>
+<li><b>MINUS
+</b><b>
+</b><b>Старайтесь не использовать в заголовке следующие знаки препинания – . ! ? – т.к. они разбивают пассажи
+</b><b>SEO</b>
+<li><b>UNIQUE
+</b><b>100% уникальный тег title.
+</b><b>Важно избегать дублирования заголовков title внутри сайта. Title должен быть уникальным как среди страниц Вашего сайта, так и во всем Интернете
+</b><b>SEO</b>
+<li><b>UPPER
+</b><b>Верхний регистр
+</b><b>Не используйте ВЕРХНИЙ РЕГИСТР при формировании Title. Выделяйтесь содержанием и умом.</b><b>SEO</b>
+<li><b>STOP
+</b><b>Стоп-слова в title</b><b>Не используйте в тайтле местомения, частицы и предлоги. Они не учитываются поисковыми системами</b><b>SEO</b>
+<li><b>~</b><b>
+</b>
+</ul>
+<h1>Вёсла</h1>
+<ul class="sel">
+<li>Пластик
+<li>Складные (разборные)
+<!-- по назначению -->
+<li>для байдарок и каное
+<li>для катамаранов и рафтов
+<li>для лодки (под уключину)
+</ul>
+<h1>Спасжилеты</h1>
+<ul class="sel">
+<li>Детские
+<li>Взрослые
+<li>Надувные
+<li>с паховыми ремнями
+<li>сертифицированные
+<li class="h">Распродажа
+</ul>
+<h1>Байдарки</h1>
+<ul class="sel">
+<li>Одноместные
+<li>Двухместные
+<li>Трёхместные
+<li>более 3-х мест
+<!-- по типу -->
+<li>Каркасные (КБ)
+<li>Надувные (НБ)
+<li>Гибриды (КНБ)
+<!-- по назначению -->
+<li>туристические
+<li>экстрим
+<li>спорт
+<li class="h">Распродажа
+</ul>
+<h1>Рафты</h1>
+<ul class="sel">
+<!-- по бренду -->
+<li>Дракар
+<li>Рафтмастер
+<li>Трекс
+<li>Тритон
+<li>Тайм-Триал
+<!-- по типу -->
+<li>Монобаллон
+</ul>
+<h1>Катамараны</h1>
+<ul class="sel">
+<!-- по типу -->
+<li>Сплавные
+<li>Парусные
+<li>Монобаллон
+<!-- по бренду -->
+<li class="h">Распродажа
+</ul>
+С выбранными: <button class="l">Удалить</button>
+<button class="l">Перенести</button>
+<br>Клик на элементе выделяет только его.
+<br>Ctrl(Cmd)+Клик добавляет/убирает элемент из выделенных.
+<br>Shift+Клик добавляет промежуток от последнего кликнутого к выделению.
+<br>
+<a href="/include/popup/nasvyazi/" title="Мы всегда на связи">Свяжитесь с нами</a>
+<!-- extra -->
+<form class="ext-subscription">Узнавайте о выгодных предложениях и получайте личные рекомендации
+<input type="email" name="e" placeholder="Напишите Ваш e-mail"><input type="submit" value="Подписаться"></form>
+<div class="ext-feedback">Есть вопросы - спрашивайте!<button>Задать вопрос</button></div>
+<form class="ext-news">Подпишитесь на свежие новости:
+<input type="email" name="e" placeholder="Напишите Ваш e-mail"><input type="submit" value="Подписаться"></form>
+<button class="l">Отмена</button>
+<button>Ещё...</button>
+<button class="h">Готово</button>
+<dl class="ext"><dt>Понравилось?<dd><i class="ico_like"></i><i class="ico_dislike"></i></dl>
+<dl class="ext"><dt>Поделиться<dd><i class="ico_vk"></i></dl>
+<dl id=ab><dt>+
+<dd>Сайт
+<dd>≡
+<dd>⚯
+<dd>⋮
+<dd><svg fill="currentColor" viewBox="0 0 32 32" width="32" height="32">
+<!-- <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path> -->
+<path fill="none" d="M0 0h24v24H0z"/>
+<path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+</svg>
+</dl>
+<!--
+<ol class="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><a itemprop="item" href="/" title="Главная"><span itemprop="name">Главная</span><meta itemprop="position" content="1"></a></li><li class="active" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name">Обмен и возврат</span><meta itemprop="position" content="2"></li></ol><h1 class="l-section__name" itemprop="headline">Можно ли вернуть или обменять купленный шаблон?</h1>
+<h2>Возврат </h2>
+<p>Будьте внимательны при оформлении заказа - программные продукты обмену и возврату не подлежат.</p>
+<p>Возврат программного продукта невозможен в связи с тем, что покупатель приобретает право на его использование, которое относится к объектам авторских прав и охраняется, как литературное произведение. Фактом получения программного продукта считается генерация регистрационного ключа, скачивание или установка сайта.</p>
+<p>Понимая некоторые неудобства, которые могут возникнуть при невозможности вернуть программный продукт, мы специально создаем демонстрационные версии наших готовых сайтов. Пожалуйста, внимательно изучайте их функционал, задавайте нам вопросы до покупки, и принимайте взвешенные решения.</p>
+<p>Все готовые решения устанавливаются только на продукты «1С-Битрикс» с активной лицензией. Проверить статус можно в панели управления вашего сайта, в разделе «Обновления» или у нас на сайте.</p>
+<h2>Обмен </h2>
+<p>Обмен приобретенных программных продуктов также невозможен, но у нас существует специальная программа лояльности, которая позволяет купить второй, третий и т.д. шаблон с дополнительной скидкой. Для получения такой скидки напишите нам.</p>
+<p>Также обратите внимание, что программные продукты предоставляются по принципу «как есть» и мы не удовлетворяем запросы, связанные с их функциональными возможностями, которые не отвечают ожиданиям покупателя или не могут быть применимы для конкретной его цели.</p>
+-->
+<script>
+'use strict';
+(function(w,d,l){
+var
+    ul = d.querySelector('ul#m')
+  , lastClickedLI = null;
+ul.onmousedown = function() { return !1; };
+function tap(e){
+var t=e.target,
+a=t.getAttribute('data-mx');
+if(a){
+show(d.getElementById(a));
+e.preventDefault();
+return !1;
+}
+if (e.shiftKey || e.altKey || e.ctrlKey || e.metaKey){
+console.log(t);
+// var newWin = w.open("about:blank", "hello", "width=200,height=200");
+// newWin.d.write("Привет, мир!");
+}
+  if('LI'===t.tagName){
+    /*
+    // возможно, клик был внутри списка UL, но вне элементов LI
+    // if (t.tagName != "LI") return;
+    while (t.tagName != "LI"){
+      t=t.parentNode;
+      if(t.tagName === "BODY") return !1;
+    }
+    */
+    if (event.metaKey || event.ctrlKey) toggleSelect(t);
+    else if (event.shiftKey) selectFromLast(t);
+    else selectSingle(t);
+    lastClickedLI = t;
+    return !1;
+  }else if('B'===t.tagName){
+    t=t.parentNode;
+    if (event.metaKey || event.ctrlKey) toggleSelect(t);
+    else if (event.shiftKey) selectFromLast(t);
+    else selectSingle(t);
+    lastClickedLI = t;
+  }
+}//:tap
+d.addEventListener('click', tap, true);
+/*
+var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+var xhr = new XHR();
+xhr.open('POST', 'https://2828.ru/log', true);
+xhr.onload = function() {
+  if (this.status != 200) return;
+  console.log( this.responseText );
+  console.log(this.response);
+}
+xhr.onerror = function() {
+  console.log( 'Ошибка ' + this.status );
+}
+xhr.send('a|b|c');
+*/
+  // --- функции для выделения ---
+  function toggleSelect(li) {
+    li.classList.toggle('selected');
+  }
+  function selectFromLast(target) {
+    var startElem = lastClickedLI || ul.children[0];
+    var isLastClickedBefore = startElem.compareDocumentPosition(target) & 4;
+    if (isLastClickedBefore) {
+      for (var elem = startElem; elem != target; elem = elem.nextElementSibling) {
+        elem.classList.add('selected');
+      }
+    } else {
+      for (var elem = startElem; elem != target; elem = elem.previousElementSibling) {
+        elem.classList.add('selected');
+      }
+    }
+    elem.classList.add('selected');
+  }
+  function deselectAll() {
+    for (var i = 0; i < ul.children.length; i++) {
+      ul.children[i].classList.remove('selected');
+    }
+  }
+  function selectSingle(li) {
+    deselectAll();
+    li.classList.add('selected');
+  }
+/*
+function getA(){
+  let liArray = document.querySelectorAll("a");
+  let uaList = [];
+  [].forEach.call(liArray, function(el){
+      let ua = el.innerText;
+      uaList.push(ua);
+  });
+  uaList = new Set(uaList); // только уникальные значения
+  // console.dir(uaList);
+  let a = document.createElement("a");
+  a.href = "data:text/octet-stream;base64," + window.btoa(JSON.stringify([uaList], null, "\t"));
+  a.download = 'ua.json';
+  a.textContent = 'DOWNLOAD USERAGENT LIST!';
+  document.body.appendChild(a);
+}
+getA();
+// if(navigator.onLine)
+w.addEventListener("beforeunload", function (e) {  // перед выгрузкой окна, документа и их ресурсов
+var confirmationMessage = "\o/";
+(e || window.event).returnValue = confirmationMessage;     //Gecko + IE
+return confirmationMessage;                                //Webkit, Safari, Chrome etc.
+});
+*/
+})(window,document,'KALININ');
+</script>
