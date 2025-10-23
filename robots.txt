@@ -1,3 +1,16 @@
 User-agent: *
-Disallow:
-Sitemap: https://1.2828.ru/sitemap.xml
+Disallow: /cgi-bin
+Disallow: /vip
+Disallow: /pro/inf
+Disallow: /pro/-
+Disallow: /pro$
+Disallow: /pro/$
+Crawl-delay: 6
+Request-rate: 1/2
+Visit-time: 0300-0600
+User-agent: Yandex
+Disallow: *?
+Disallow: /vip
+Disallow: /
+Disallow: /*.php$
+Allow: /pro/
